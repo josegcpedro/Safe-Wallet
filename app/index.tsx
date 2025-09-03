@@ -1,6 +1,6 @@
 import { ImageBackground, Text, StyleSheet } from "react-native";
 
-const HomeImage = require("../assets/images/greece.jpg");
+const HomeImage = require("../assets/images/rome.jpg");
 
 export default function Index() {
   return (
