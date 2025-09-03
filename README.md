@@ -5,7 +5,9 @@
 ---
 ## Features 
 
-
+---
+###### NIY = Not Implemented Yet
+---
 
 - **Login**
     - Username (NIY)
@@ -40,21 +42,19 @@
     - Maybe in future...
 
 ---
-###### NIY = Not Implemented Yet
----
 
 ## What I Learned
 
 ### Setup Simulator
 
-1. **Install Xcode**  
-   First, I installed **XCODE** and set up the iOS version by going to the settings and pressing `⌘ + ,`
+1. #### Install Xcode ####
+   First, I installed **Xcode** and set up the **iOS version** by going to the settings and pressing `⌘ + ,`
    
-2. **Install Watchman**  
+2. #### Install Watchman ####  
    Watchman is a tool for monitoring file changes, which improves performance.  
    Installation command:  
    ```bash
    brew install watchman
-3. **Launching app**
+3. #### Launching app ####
     Then running the application with `npx expo start` and opening the ***ios simulator (i)*** 
 
