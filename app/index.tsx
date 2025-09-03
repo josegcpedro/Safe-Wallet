@@ -1,15 +1,14 @@
-import { Text, View } from "react-native";
+import { ImageBackground, Text, StyleSheet } from "react-native";
+
+const HomeImage = require("../assets/images/athene.jpg");
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen works</Text>
-    </View>
+    <ImageBackground
+      source={HomeImage}
+      style={StyleSheet.absoluteFillObject}
+      resizeMode="cover"
+    ></ImageBackground>
   );
 }
+
