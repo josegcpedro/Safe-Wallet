@@ -1,6 +1,8 @@
+import { Button } from "@react-navigation/elements";
 import { ImageBackground, Text, StyleSheet } from "react-native";
 
 const HomeImage = require("../assets/images/rome.jpg");
+const test =()=> alert("ta touche");
 
 export default function Index() {
   return (
@@ -9,7 +11,8 @@ export default function Index() {
       style={styles.background}
       resizeMode="cover"
     >
-      <Text style={styles.text}>Connecter</Text>
+      <Text style={styles.text}>Bienvenue sur Safe Wallet!</Text>
+      <Button onPress={test} style={styles.Button}>Connecter</Button>
     </ImageBackground>
   );
 }
@@ -18,11 +21,27 @@ const styles = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "flex-end",
+    alignItems: "center"
   },
   text: {
     color: "white",
-    fontSize: 24,
+    fontSize: 30,
     textAlign: "center",
-    marginBottom: 100,
+    marginBottom: 500,
+  },
+  Button: {
+    backgroundColor: "#FBFFFE",
+    width: 220,
+    paddingVertical: 12,
+    borderRadius: 12,
+    marginBottom: 200,
+    alignItems: "center",
+    shadowColor: "#000",   
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
+
   }
+
 });
