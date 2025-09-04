@@ -1,6 +1,7 @@
 import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import { ImageBackground, Text, StyleSheet } from "react-native";
+import { ImageBackground, Text, StyleSheet, Animated } from "react-native";
+
 
 const HomeImage = require("../assets/images/rome.jpg");
 

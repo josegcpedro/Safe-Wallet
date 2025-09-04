@@ -1,15 +1,17 @@
 import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
-import { Button } from "@react-navigation/elements";
+import { Background, Button } from "@react-navigation/elements";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react"
-import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
-import { StyleSheet } from "react-native";
+import { ActivityIndicator, ImageBackground, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Alert } from "react-native";
 import { updateProfile } from "firebase/auth";
 import { useRouter } from "expo-router";
 
 
 export default function Login() {
+    const HomeImage = require("../../assets/images/rome.jpg");
+
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -54,40 +56,67 @@ export default function Login() {
 
 
     return (
-        <View style={styles.container}>
-            <KeyboardAvoidingView behavior="padding">
-                <TextInput value={email} style={styles.input} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)}></TextInput>
-                <TextInput value={password} style={styles.input} placeholder="Password" autoCapitalize="none" onChangeText={(text) => setPassword(text)} secureTextEntry={true}></TextInput>
-                {loading ? <ActivityIndicator size="large" color="#0000ff" />
-                    : <>
-                        <Button style={styles.Button} onPress={signIn} >Login</Button>
-                        <Button style={styles.Button} onPress={signUp} >Créer un compte</Button>
-                    </>}
-            </KeyboardAvoidingView>
-        </View>
-
+        <ImageBackground
+            source={HomeImage}
+            style={styles.Background}
+            blurRadius={1}
+        >
+            <View style={styles.container}>
+                <Text style={styles.header}>Connectez vous ! </Text>
+                <KeyboardAvoidingView behavior="padding">
+                    <TextInput value={email} style={styles.input} placeholder="Email" placeholderTextColor="#888" autoCapitalize="none" onChangeText={(text) => setEmail(text)}></TextInput>
+                    <TextInput value={password} style={styles.input} placeholder="Password" placeholderTextColor="#888" autoCapitalize="none" onChangeText={(text) => setPassword(text)} secureTextEntry={true}></TextInput>
+                    {loading ? <ActivityIndicator size="large" color="#0000ff" />
+                        : <>
+                            <View style={styles.buttonRow}>
+                            <Button style={styles.Button} onPress={signIn} >Login</Button>
+                            <Button style={styles.Button} onPress={signUp} >Créer un compte</Button>
+                            </View>
+                        </>}
+                </KeyboardAvoidingView>
+            </View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
+    Background: {
         ...StyleSheet.absoluteFillObject,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "white"
+    },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    header: {
+        position: 'absolute',
+        top: 160,
+        fontSize: 30,
+        color: "white"
     },
     input: {
         marginVertical: 4,
         height: 50,
         width: 350,
-        borderWidth: 1,
-        borderRadius: 4,
+        borderWidth: 0.5,
+        borderRadius: 10,
         padding: 10,
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        borderColor: "gray"
+    },
+    buttonRow: {
+        flexDirection: 'row',      
+        justifyContent: 'space-between', 
+        width: 350,                 
+        marginTop: 10,
     },
     Button: {
-        backgroundColor: "none",
-
+        backgroundColor: "white",
+        flex: 1,       
+        marginHorizontal: 5,        
     },
+
 })
