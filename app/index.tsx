@@ -1,10 +1,12 @@
 import { Button } from "@react-navigation/elements";
+import { useRouter } from "expo-router";
 import { ImageBackground, Text, StyleSheet } from "react-native";
 
 const HomeImage = require("../assets/images/rome.jpg");
-const test =()=> alert("ta touche");
 
 export default function Index() {
+  const router = useRouter();
+
   return (
     <ImageBackground
       source={HomeImage}
@@ -12,7 +14,12 @@ export default function Index() {
       resizeMode="cover"
     >
       <Text style={styles.text}>Bienvenue sur Safe Wallet!</Text>
-      <Button onPress={test} style={styles.Button}>Connecter</Button>
+      <Button
+        onPress={() => router.push("/screens/login")}
+        style={styles.Button}
+      >
+        Connecter
+      </Button>
     </ImageBackground>
   );
 }
@@ -21,7 +28,7 @@ const styles = StyleSheet.create({
   background: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: "flex-end",
-    alignItems: "center"
+    alignItems: "center",
   },
   text: {
     color: "white",
@@ -36,12 +43,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 200,
     alignItems: "center",
-    shadowColor: "#000",   
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 4,
-
-  }
-
+  },
 });

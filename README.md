@@ -58,3 +58,4 @@
 3. #### Launching app ####
     Then running the application with `npx expo start` and opening the ***ios simulator (i)*** 
 
+### Setup Welcome page
