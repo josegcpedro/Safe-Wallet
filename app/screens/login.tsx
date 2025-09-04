@@ -2,7 +2,7 @@ import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react"
-import { ActivityIndicator, TextInput, View } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
 import { Text, StyleSheet } from "react-native";
 
 export default function Login() {
@@ -13,10 +13,10 @@ export default function Login() {
 
     const signIn = async () => {
         setLoading(true);
-        try{
+        try {
             const response = await signInWithEmailAndPassword(auth, email, password);
             console.log(response);
-        } catch (error: any){
+        } catch (error: any) {
             console.log(error);
             alert('Sign in failed: ' + error.message)
         } finally {
@@ -26,11 +26,11 @@ export default function Login() {
 
     const signUp = async () => {
         setLoading(true);
-        try{
+        try {
             const response = await createUserWithEmailAndPassword(auth, email, password);
             console.log(response);
             alert("check ur mails")
-        } catch (error: any){
+        } catch (error: any) {
             console.log(error);
             alert('Sign in failed: ' + error.message)
         } finally {
@@ -41,16 +41,15 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
-            <TextInput value={email} style={styles.input} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)}></TextInput>
-            <TextInput value={password} style={styles.input} placeholder="Password" autoCapitalize="none" onChangeText={(text) => setPassword(text)} secureTextEntry={true}></TextInput>
-
-            { loading ? <ActivityIndicator size="large" color="#0000ff" />
-            :<>
-            <Button style={styles.Button} onPress={signIn} >Login</Button>
-            <Button style={styles.Button} onPress={signUp} >Créer un compte</Button>
-            </>}
-        
-        
+            <KeyboardAvoidingView behavior="padding">
+                <TextInput value={email} style={styles.input} placeholder="Email" autoCapitalize="none" onChangeText={(text) => setEmail(text)}></TextInput>
+                <TextInput value={password} style={styles.input} placeholder="Password" autoCapitalize="none" onChangeText={(text) => setPassword(text)} secureTextEntry={true}></TextInput>
+                {loading ? <ActivityIndicator size="large" color="#0000ff" />
+                    : <>
+                        <Button style={styles.Button} onPress={signIn} >Login</Button>
+                        <Button style={styles.Button} onPress={signUp} >Créer un compte</Button>
+                    </>}
+            </KeyboardAvoidingView>
         </View>
 
     )
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff"
     },
     Button: {
-    backgroundColor: "none",
-  
-  },
+        backgroundColor: "none",
+
+    },
 })

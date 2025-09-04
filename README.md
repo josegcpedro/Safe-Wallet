@@ -10,8 +10,8 @@
 ---
 
 - **Login**
-    - Username (NIY)
-    - Password (NIY)
+    - Username (Done)
+    - Password (Done)
     - Login with google (NIY)
     - Try biometrical login (NIY)
 
@@ -93,3 +93,9 @@
 2. TextInput
     I created a textInput and i use `value={email} value={password}` and onChangeText it set a new value to the const
     I put `secureTextEntry={true}` then i have "*****" when i wrote my password
+3. Logic
+    When i click on button "login" it goes to the signIn logic, it will take the email and password and see inside firebase all the persons that i have, if password or email dont match, a alert will be showed, il its ok it will send the person to home page with the **signInWithEmailAndPassword** firebase feature
+
+    Basically same thing with signUp but instead of just create, it will verify first if a email with that name is already registrateed, i didn't do that, firebase does alone
+
+
