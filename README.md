@@ -16,7 +16,7 @@
     - Try biometrical login (NIY)
 
 - **Home** 
-    - Welcome message for the user (NIY)
+    - Welcome message for the user (Done)
 
 - **Graphics**
     - Expenses chart (NIY)
@@ -97,5 +97,8 @@
     When i click on button "login" it goes to the signIn logic, it will take the email and password and see inside firebase all the persons that i have, if password or email dont match, a alert will be showed, il its ok it will send the person to home page with the **signInWithEmailAndPassword** firebase feature
 
     Basically same thing with signUp but instead of just create, it will verify first if a email with that name is already registrateed, i didn't do that, firebase does alone
-
+4. Get Username to use on Home page
+    I used **updateprofile** from firebase to put a username on the account, so when the person register for the first time,the app asks "what is your name" then is saved into the person profile.
+    Then, on home page i import **FIREBASE auth** and create a user const `const user = FIREBASE_AUTH.currentUser`
+    And displayed on a Text, using `Salut {user?.displayName}`, why ? beacause maybe the person didn't put a name on it
 

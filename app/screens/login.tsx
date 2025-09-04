@@ -40,7 +40,6 @@ export default function Login() {
                 async (name) => {
                     if (name) {
                         await updateProfile(response.user, { displayName: name });
-
                     }
                     router.push("/screens/home")
                 }
