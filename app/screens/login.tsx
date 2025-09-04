@@ -3,7 +3,7 @@ import { Button } from "@react-navigation/elements";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react"
 import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
-import { Text, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { Alert } from "react-native";
 import { updateProfile } from "firebase/auth";
 import { useRouter } from "expo-router";
@@ -72,16 +72,19 @@ export default function Login() {
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 20,
+        ...StyleSheet.absoluteFillObject,
         flex: 1,
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white"
     },
     input: {
         marginVertical: 4,
         height: 50,
+        width: 350,
         borderWidth: 1,
         borderRadius: 4,
-        padding: 4,
+        padding: 10,
         backgroundColor: "#fff"
     },
     Button: {
