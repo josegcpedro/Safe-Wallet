@@ -4,8 +4,13 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import { useState } from "react"
 import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
 import { Text, StyleSheet } from "react-native";
+import { Alert } from "react-native";
+import { updateProfile } from "firebase/auth";
+import { useRouter } from "expo-router";
+
 
 export default function Login() {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -16,6 +21,7 @@ export default function Login() {
         try {
             const response = await signInWithEmailAndPassword(auth, email, password);
             console.log(response);
+            router.push("/screens/home")
         } catch (error: any) {
             console.log(error);
             alert('Sign in failed: ' + error.message)
@@ -28,8 +34,17 @@ export default function Login() {
         setLoading(true);
         try {
             const response = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(response);
-            alert("check ur mails")
+            Alert.prompt(
+                "Bienvenue !",
+                "Quel est votre nom ?",
+                async (name) => {
+                    if (name) {
+                        await updateProfile(response.user, { displayName: name });
+
+                    }
+                    router.push("/screens/home")
+                }
+            );
         } catch (error: any) {
             console.log(error);
             alert('Sign in failed: ' + error.message)
