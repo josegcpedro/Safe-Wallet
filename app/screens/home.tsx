@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     },
     welcome: {
         fontSize: 24,
-        margin: 20,
+        paddingTop: 70,
+        paddingLeft: 10
     },
 });
