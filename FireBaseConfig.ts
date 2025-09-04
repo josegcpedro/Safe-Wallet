@@ -1,17 +1,17 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {getAuth} from "firebase/auth"
+import {getFirestore} from "firebase/firestore"
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAhZGdROPFIKzBrRd3VZnV8WYs0MZ3MVMs",
-  authDomain: "safe-w.firebaseapp.com",
-  projectId: "safe-w",
-  storageBucket: "safe-w.firebasestorage.app",
-  messagingSenderId: "857586357478",
-  appId: "1:857586357478:web:c7873c3d6984a6bd315727"
+  apiKey: "AIzaSyBqbQLvqpO7X9eyNiWN3hBqNfGtfRSlbLc",
+  authDomain: "safe-wallet-df860.firebaseapp.com",
+  projectId: "safe-wallet-df860",
+  storageBucket: "safe-wallet-df860.firebasestorage.app",
+  messagingSenderId: "578663747730",
+  appId: "1:578663747730:web:e6d1596f038bdeea30564b"
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+export const FIREBASE_APP = initializeApp(firebaseConfig);
+export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
+export const FIREBASE_DB = getFirestore(FIREBASE_APP)

@@ -78,4 +78,4 @@
     - Android
         - elevation (the bigger the number,bigger the shadow )
 
-    
+### Setup firebase 
