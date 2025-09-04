@@ -57,7 +57,7 @@
    brew install watchman
 3. #### Launching app ####
     Then running the application with `npx expo start` and opening the ***ios simulator (i)*** 
-
+---
 ### Setup Welcome page
 
 1. #### Image Background ####
@@ -77,5 +77,19 @@
         - shadowRadius (blur)
     - Android
         - elevation (the bigger the number,bigger the shadow )
-
+--- 
 ### Setup firebase 
+
+1. #### Setup FireBaseConfig.ts
+    First of all, after doing `npx expo install firebase` i created a file **fireBaseConfig.ts** and i put all the informations that firebase gived to me after i created the web app on firebase.
+    Then i imported firebase auth and firebase store. and exported like the app, so i can use **FIREBASE_AUTH** when i want, and dont need to import all the times.
+2. #### Metro.config.js
+    It's a advanced configuration file for react native, it's for particulary needs.
+
+---
+### Login
+1. UseState
+    First i create 4 const which contain `const [password, setPassword] = useState('');`, and for email and reloading aswell
+2. TextInput
+    I created a textInput and i use `value={email} value={password}` and onChangeText it set a new value to the const
+    I put `secureTextEntry={true}` then i have "*****" when i wrote my password
