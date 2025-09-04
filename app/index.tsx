@@ -11,7 +11,6 @@ export default function Index() {
     <ImageBackground
       source={HomeImage}
       style={styles.background}
-      resizeMode="cover"
     >
       <Text style={styles.text}>Bienvenue sur Safe Wallet!</Text>
       <Button
