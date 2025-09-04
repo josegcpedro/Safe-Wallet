@@ -46,8 +46,8 @@ export default function Login() {
 
             { loading ? <ActivityIndicator size="large" color="#0000ff" />
             :<>
-            <Button onPress={signIn} >Login</Button>
-            <Button onPress={signUp} >SignUp</Button>
+            <Button style={styles.Button} onPress={signIn} >Login</Button>
+            <Button style={styles.Button} onPress={signUp} >Créer un compte</Button>
             </>}
         
         
@@ -69,5 +69,9 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         padding: 4,
         backgroundColor: "#fff"
-    }
+    },
+    Button: {
+    backgroundColor: "none",
+  
+  },
 })
