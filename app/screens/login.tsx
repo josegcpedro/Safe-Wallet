@@ -1,12 +1,9 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
 import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
-import { StyleSheet, Text } from "react-native";
-import { updateProfile } from "firebase/auth";
 import { useRouter } from "expo-router";
-import { Alert } from "react-native";
-import { useState } from "react"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useState } from "react";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from "react-native";
 
 
 export default function Login() {
