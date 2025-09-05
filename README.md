@@ -90,17 +90,24 @@
 
 ---
 ### Login
-1. UseState
+1. #### UseState ####
     First i create 4 const which contain `const [password, setPassword] = useState('');`, and for email and reloading aswell
-2. TextInput
+2. #### TextInput ####
     I created a textInput and i use `value={email} value={password}` and onChangeText it set a new value to the const
     I put `secureTextEntry={true}` then i have "*****" when i wrote my password
-3. Logic
+3. #### Logic ####
     When i click on button "login" it goes to the signIn logic, it will take the email and password and see inside firebase all the persons that i have, if password or email dont match, a alert will be showed, il its ok it will send the person to home page with the **signInWithEmailAndPassword** firebase feature
 
     Basically same thing with signUp but instead of just create, it will verify first if a email with that name is already registrateed, i didn't do that, firebase does alone
-4. Get Username to use on Home page
+4. #### Get Username to use on Home page ####
     I used **updateprofile** from firebase to put a username on the account, so when the person register for the first time,the app asks "what is your name" then is saved into the person profile.
     Then, on home page i import **FIREBASE auth** and create a user const `const user = FIREBASE_AUTH.currentUser`
     And displayed on a Text, using `Salut {user?.displayName}`, why ? beacause maybe the person didn't put a name on it
 
+---
+### Tabs
+1. #### Imports ####
+    First i started by importing `import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";` into the page that i want to get the tabs
+2. #### Tab Navigation ####
+    Then i created a `<Tab.Navigator>` and inside i put `<Tab.screen name="nameOfTab" component={nameOfTab}>`, then i imported the tabs.
+ga
