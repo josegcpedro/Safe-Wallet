@@ -1,4 +1,4 @@
-import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
+import { FIREBASE_AUTH } from "@/src/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
