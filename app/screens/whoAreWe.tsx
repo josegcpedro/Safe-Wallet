@@ -1,5 +1,5 @@
-import { router } from "expo-router";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { router } from "expo-router";
 
 export default function WhoAreWe() {
     return (
@@ -7,40 +7,41 @@ export default function WhoAreWe() {
             <Text style={styles.header}>Qui sommes-nous ?</Text>
 
             <Text style={styles.intro}>
-                Safe Wallet est une application sécurisée et intuitive, conçue pour vous aider à gérer vos finances personnelles et protéger vos données.
+                Safe Wallet est une application intuitive et sécurisée qui vous aide à gérer facilement vos finances personnelles tout en protégeant vos données.
             </Text>
 
+
             <View style={styles.card}>
-                <Text style={styles.cardTitle}>💰 Gestion des finances</Text>
-                <Text style={styles.cardText}>Suivez vos revenus, dépenses et soldes facilement.</Text>
+                <Text style={styles.cardTitle}>🚪 Connexion</Text>
+                <Text style={styles.cardText}>Créez un compte ou connectez-vous facilement.</Text>
             </View>
 
             <View style={styles.card}>
-                <Text style={styles.cardTitle}>📜 Historique des transactions</Text>
-                <Text style={styles.cardText}>Consultez vos transactions passées et organisez-les simplement.</Text>
+                <Text style={styles.cardTitle}>📊 Graphiques</Text>
+                <Text style={styles.cardText}>Consultez et créez des graphiques de manière simple et intuitive.</Text>
             </View>
 
             <View style={styles.card}>
-                <Text style={styles.cardTitle}>🔒 Sécurité renforcée</Text>
-                <Text style={styles.cardText}>Vos informations sensibles sont protégées par chiffrement et authentification sécurisée.</Text>
+                <Text style={styles.cardTitle}>💰 Dépenses</Text>
+                <Text style={styles.cardText}>Ajoutez ou supprimez vos dépenses mensuelles.</Text>
             </View>
+
             <View style={styles.card}>
-                <Text style={styles.cardTitle}>🔒 Sécurité renforcée</Text>
-                <Text style={styles.cardText}>Vos informations sensibles sont protégées par chiffrement et authentification sécurisée.</Text>
+                <Text style={styles.cardTitle}>🗓️ Cartes mensuelles</Text>
+                <Text style={styles.cardText}>Créez des cartes mensuelles pour contrôler vos dépenses du mois.</Text>
             </View>
+
             <View style={styles.card}>
-                <Text style={styles.cardTitle}>🔒 Sécurité renforcée</Text>
-                <Text style={styles.cardText}>Vos informations sensibles sont protégées par chiffrement et authentification sécurisée.</Text>
-            </View>
-            <View style={styles.card}>
-                <Text style={styles.cardTitle}>🔒 Sécurité renforcée</Text>
-                <Text style={styles.cardText}>Vos informations sensibles sont protégées par chiffrement et authentification sécurisée.</Text>
+                <Text style={styles.cardTitle}>🛠️ Fonctionnalités futures</Text>
+                <Text style={styles.cardText}>- Connexion biométrique (Face ID)</Text>
+                <Text style={styles.cardText}>- Automatisation des cartes mensuelles</Text>
             </View>
 
             <Text style={styles.returnButton} onPress={() => router.push("/")}>
                 Retour
             </Text>
         </ScrollView>
+
     );
 }
 
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f3eeeaff",
     },
     container: {
-        marginTop: 100,
+        marginTop: 80,
         padding: 20,
         alignItems: "center",
     },
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         marginBottom: 20,
-        color: "#333",
+        color: "#555",
     },
     intro: {
         fontSize: 16,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         marginBottom: 8,
-        color: "#333",
+        color: "#555",
     },
     cardText: {
         fontSize: 15,
@@ -93,9 +94,10 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
     returnButton: {
-        fontSize:25,
-        color:"#555",
-        marginBottom:50,
+        fontSize: 25,
+        color: "#555",
+        paddingTop: 20,
+        marginBottom: 50,
     }
 
 });

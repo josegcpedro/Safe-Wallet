@@ -1,12 +1,12 @@
-import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
-import { Background, Button } from "@react-navigation/elements";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react"
-import { ActivityIndicator, ImageBackground, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
+import { Button } from "@react-navigation/elements";
 import { StyleSheet, Text } from "react-native";
-import { Alert } from "react-native";
 import { updateProfile } from "firebase/auth";
 import { useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { useState } from "react"
 
 
 export default function Login() {
@@ -53,7 +53,6 @@ export default function Login() {
         }
     }
 
-
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Connectez vous ! </Text>
@@ -68,6 +67,10 @@ export default function Login() {
                         </View>
                     </>}
             </KeyboardAvoidingView>
+
+            <Text style={styles.returnButton} onPress={() => router.push("/")}>
+                Retour
+            </Text>
         </View>
     )
 }
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 165,
         fontSize: 30,
-        color: "#333333",
+        color: "#555",
     },
     input: {
         marginVertical: 4,
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#FFFFFF",
         borderColor: "#CCCCCC",
-        color: "#000000",
+        color: "#555",
     },
     buttonRow: {
         flexDirection: 'row',
@@ -116,5 +119,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16,
     },
+    returnButton: {
+        fontSize: 15,
+        color: "#555",
+        paddingTop: 20,
+    }
 });
 
