@@ -20,7 +20,7 @@
 
 - **Graphics**
     - Expenses chart (NIY)
-    - Expected savings chart (NIY)
+    - Expected savings chart (NIY)scha
 
 - **Add / Remove Depenses**
     - Add expenses (NIY)
@@ -36,7 +36,6 @@
 
 - **Compare depenses** 
     - Compare monthly depenses (planned future)
-
 
 - **DangerZone**
     - Maybe in future...

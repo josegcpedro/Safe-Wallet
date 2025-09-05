@@ -1,12 +1,12 @@
-import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
-import { Background, Button } from "@react-navigation/elements";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react"
-import { ActivityIndicator, ImageBackground, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { ActivityIndicator, KeyboardAvoidingView, TextInput, View } from "react-native";
+import { FIREBASE_AUTH } from "@/app/firebase/FireBaseConfig";
+import { Button } from "@react-navigation/elements";
 import { StyleSheet, Text } from "react-native";
-import { Alert } from "react-native";
 import { updateProfile } from "firebase/auth";
 import { useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { useState } from "react"
 
 
 export default function Login() {
@@ -53,7 +53,6 @@ export default function Login() {
         }
     }
 
-
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Connectez vous ! </Text>
@@ -68,53 +67,62 @@ export default function Login() {
                         </View>
                     </>}
             </KeyboardAvoidingView>
+
+            <Text style={styles.returnButton} onPress={() => router.push("/")}>
+                Retour
+            </Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f3eeeaff",
-  },
-  header: {
-    position: 'absolute',
-    top: 165,
-    fontSize: 30,
-    color: "#333333",
-  },
-  input: {
-    marginVertical: 4,
-    height: 50,
-    width: 350,
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "#FFFFFF", 
-    borderColor: "#CCCCCC",
-    color: "#000000",
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 350,
-    marginTop: 10,
-  },
-  Button: {
-    flex: 1,
-    marginHorizontal: 5,
-    paddingVertical: 12,
-    borderRadius: 10,
-    backgroundColor: "#FFFFFF"
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f3eeeaff",
+    },
+    header: {
+        position: 'absolute',
+        top: 165,
+        fontSize: 30,
+        color: "#555",
+    },
+    input: {
+        marginVertical: 4,
+        height: 50,
+        width: 350,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        backgroundColor: "#FFFFFF",
+        borderColor: "#CCCCCC",
+        color: "#555",
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 350,
+        marginTop: 10,
+    },
+    Button: {
+        flex: 1,
+        marginHorizontal: 5,
+        paddingVertical: 12,
+        borderRadius: 10,
+        backgroundColor: "#FFFFFF"
+    },
+    buttonText: {
+        color: "#FFFFFF",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+    returnButton: {
+        fontSize: 15,
+        color: "#555",
+        paddingTop: 20,
+    }
 });
 
