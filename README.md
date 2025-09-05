@@ -18,6 +18,9 @@
 - **Home** 
     - Welcome message for the user (Done)
 
+- **Informations Page**
+    - Describe all features (Done)
+
 - **Graphics**
     - Expenses chart (NIY)
     - Expected savings chart (NIY)scha
