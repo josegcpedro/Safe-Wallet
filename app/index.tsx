@@ -1,6 +1,6 @@
 import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import { ImageBackground, Text, StyleSheet, Animated } from "react-native";
+import { ImageBackground, Text, StyleSheet } from "react-native";
 
 
 const HomeImage = require("../assets/images/rome.jpg");
@@ -20,6 +20,9 @@ export default function Index() {
       >
         Connecter
       </Button>
+      <Text onPress={() => router.push("/screens/whoAreWe")} style={styles.whoAreWe}>
+        Qui sommes nous ?
+      </Text>
     </ImageBackground>
   );
 }
@@ -31,7 +34,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    color: "#333333",
+    color: "#ffff",
     fontSize: 30,
     textAlign: "center",
     marginBottom: 500,
@@ -43,4 +46,9 @@ const styles = StyleSheet.create({
     marginBottom: 200,
     alignItems: "center",
   },
+  whoAreWe: {
+    position: "absolute",
+    bottom: 100,
+    color: "#ffff",
+  }
 });

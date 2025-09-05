@@ -73,48 +73,48 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f3eeeaff",
-  },
-  header: {
-    position: 'absolute',
-    top: 165,
-    fontSize: 30,
-    color: "#333333",
-  },
-  input: {
-    marginVertical: 4,
-    height: 50,
-    width: 350,
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: "#FFFFFF", 
-    borderColor: "#CCCCCC",
-    color: "#000000",
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: 350,
-    marginTop: 10,
-  },
-  Button: {
-    flex: 1,
-    marginHorizontal: 5,
-    paddingVertical: 12,
-    borderRadius: 10,
-    backgroundColor: "#FFFFFF"
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#f3eeeaff",
+    },
+    header: {
+        position: 'absolute',
+        top: 165,
+        fontSize: 30,
+        color: "#333333",
+    },
+    input: {
+        marginVertical: 4,
+        height: 50,
+        width: 350,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        backgroundColor: "#FFFFFF",
+        borderColor: "#CCCCCC",
+        color: "#000000",
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: 350,
+        marginTop: 10,
+    },
+    Button: {
+        flex: 1,
+        marginHorizontal: 5,
+        paddingVertical: 12,
+        borderRadius: 10,
+        backgroundColor: "#FFFFFF"
+    },
+    buttonText: {
+        color: "#FFFFFF",
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
 });
 
