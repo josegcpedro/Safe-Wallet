@@ -110,4 +110,3 @@
     First i started by importing `import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";` into the page that i want to get the tabs
 2. #### Tab Navigation ####
     Then i created a `<Tab.Navigator>` and inside i put `<Tab.screen name="nameOfTab" component={nameOfTab}>`, then i imported the tabs.
-ga
