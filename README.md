@@ -110,3 +110,44 @@
     First i started by importing `import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";` into the page that i want to get the tabs
 2. #### Tab Navigation ####
     Then i created a `<Tab.Navigator>` and inside i put `<Tab.screen name="nameOfTab" component={nameOfTab}>`, then i imported the tabs.
+
+---
+### Change Tabs Icon
+
+#### 1. Imports
+First, I imported `Ionicons` from `'@expo/vector-icons'`. This allows me to use icons in my tab navigator.
+
+#### 2. TabNavigator
+Then, I declare a tab navigator using `createBottomTabNavigator()`.  
+
+- If the route name is `'exemple'`, a specific icon is displayed.  
+- If the route name is something else, a different icon is displayed.  
+
+I also use `tabBarActiveTintColor` and `tabBarInactiveTintColor` to adjust the icon colors when a tab is active or inactive.
+
+---
+### Firebase DB
+
+#### 1. Imports
+First i imported `import { doc, getDoc, setDoc } from "firebase/firestore"`, which gives me the utilities to manage the database.
+#### 2. useState
+I created `currentId, userData, and loading` loading is a boolean, set to true by default.
+#### 3. useEffect
+The first useEffect sets currentId with the user ID, verifying if the user is connected or not.
+The second useEffect fetches the data. I use a try-catch block, and inside, I try to get the document with `doc(FIREBASE_DB, "users", currentid)`
+and then getting the doc with `const docSnap = await getDoc(docRef);` then if `docSnap.exists` i get the data with a const `const data = docSnap.data();` and set the userData with the data else a error shows up, then i do the function on the end of the useEffect by doing `fetchData()`
+#### 4. Display data
+to display i use `Nom: {userData?.displayName ?? "Inconnu"}`if displayName does not exist it shows `Inconnu`
+### Firebase Firestore Functions
+
+- **`doc`**  
+  Creates a reference to a specific document in a Firestore collection.  
+  Example: `const docRef = doc(FIREBASE_DB, "users", userId);`
+
+- **`getDoc`**  
+  Retrieves the data from a document reference. Returns a snapshot of the document.  
+  Example: `const docSnap = await getDoc(docRef);`
+
+- **`setDoc`**  
+  Writes data to a document. If the document does not exist, it will be created.  
+  Example: `await setDoc(docRef, { name: "John", age: 30 });`

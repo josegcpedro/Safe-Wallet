@@ -1,33 +1,45 @@
-import { FIREBASE_AUTH } from "@/src/firebase/FireBaseConfig";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Accueil from "../tabs/accueil";
 import Params from "../tabs/params";
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function Home() {
-    const user = FIREBASE_AUTH.currentUser;
     const Tab = createBottomTabNavigator();
 
     return (
         <View style={styles.container}>
-            <Text style={styles.welcome}>Salut {user?.displayName} !</Text>
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                headerShown: false, 
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName: keyof typeof Ionicons.glyphMap;
 
-            <Tab.Navigator screenOptions={{ headerShown: false }}>
-                <Tab.Screen name="Accueil" component={Accueil} />
-                <Tab.Screen name="Params" component={Params} />
-            </Tab.Navigator>
+                    if (route.name === 'Accueil') {
+                        iconName = focused ? 'home' : 'home-outline';
+                    } else if (route.name === 'Paramètres') {
+                        iconName = focused ? 'settings' : 'settings-outline';
+                    }
+
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: '#007AFF',
+                tabBarInactiveTintColor: '#555',
+            })}
+
+        >
+            <Tab.Screen name="Accueil" component={Accueil} />
+            <Tab.Screen name="Paramètres" component={Params} />
+        </Tab.Navigator>
         </View>
+
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "#f3eeeaff"
-    },
-    welcome: {
-        fontSize: 24,
-        paddingTop: 70,
-        paddingLeft: 10
     },
 });
