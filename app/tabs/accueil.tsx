@@ -22,12 +22,6 @@ export default function Accueil() {
     }, []);
 
     useEffect(() => {
-        if (currentUid) {
-            console.log("mis a jour");
-        }
-    }, [currentUid]);
-
-    useEffect(() => {
         if (!currentUid) return;
 
         const fetchData = async () => {
