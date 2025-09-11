@@ -19,7 +19,7 @@ export default function Home() {
 
                     if (route.name === 'Accueil') {
                         iconName = focused ? 'home' : 'home-outline';
-                    } else if (route.name === 'Params') {
+                    } else if (route.name === 'Paramètres') {
                         iconName = focused ? 'settings' : 'settings-outline';
                     }
 
@@ -31,7 +31,7 @@ export default function Home() {
 
         >
             <Tab.Screen name="Accueil" component={Accueil} />
-            <Tab.Screen name="Params" component={Params} />
+            <Tab.Screen name="Paramètres" component={Params} />
         </Tab.Navigator>
         </View>
 
