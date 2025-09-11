@@ -32,7 +32,7 @@ export default function Accueil() {
 
                 if (docSnap.exists()) { // si ya des données ça récupére
                     const data = docSnap.data();
-                    console.log("Données Firestore :", data);
+                    console.log("Données collecté");
                     setUserData(data);
                 } else {
                     console.log("Pas encore de données pour cet utilisateur.");
@@ -50,7 +50,7 @@ export default function Accueil() {
     return (
         <View style={styles.container}>
             <Text>
-                <Text>Salary : {userData?.displayName ?? "Non renseigné"}</Text>
+                <Text>Nom  : {userData?.displayName ?? "Non renseigné"}</Text>
 
 
                 <Text>Salary : {userData?.salary ?? "Non renseigné"}</Text>
