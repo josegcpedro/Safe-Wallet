@@ -110,3 +110,17 @@
     First i started by importing `import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";` into the page that i want to get the tabs
 2. #### Tab Navigation ####
     Then i created a `<Tab.Navigator>` and inside i put `<Tab.screen name="nameOfTab" component={nameOfTab}>`, then i imported the tabs.
+
+---
+### Change Tabs Icon
+
+#### 1. Imports
+First, I imported `Ionicons` from `'@expo/vector-icons'`. This allows me to use icons in my tab navigator.
+
+#### 2. TabNavigator
+Then, I declare a tab navigator using `createBottomTabNavigator()`.  
+
+- If the route name is `'exemple'`, a specific icon is displayed.  
+- If the route name is something else, a different icon is displayed.  
+
+I also use `tabBarActiveTintColor` and `tabBarInactiveTintColor` to adjust the icon colors when a tab is active or inactive.
