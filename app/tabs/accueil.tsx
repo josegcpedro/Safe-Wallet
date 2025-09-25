@@ -8,9 +8,17 @@ export default function Accueil() {
     const [userData, setUserData] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
 
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+
 
     useEffect(() => {
-        const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(user => { // quand un changement ce passe ça verifie si le user existe, si oui ça définit le currentUid comme user.uid
+        const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(user => {
             if (user) {
                 setCurrentUid(user.uid);
             } else {
@@ -18,19 +26,19 @@ export default function Accueil() {
                 setLoading(false);
             }
         });
-        return unsubscribe; // arrête de listener pour éviter les fuites de mémoire
+        return unsubscribe;
     }, []);
 
     useEffect(() => {
         if (!currentUid) return;
 
         const fetchData = async () => {
-            setLoading(true); // démarre le loader
+            setLoading(true);
             try {
-                const docRef = doc(FIREBASE_DB, "users", currentUid); // essaye de récurer les données
+                const docRef = doc(FIREBASE_DB, "users", currentUid);
                 const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) { // si ya des données ça récupére
+                if (docSnap.exists()) {
                     const data = docSnap.data();
                     console.log("Données collecté");
                     setUserData(data);
@@ -41,7 +49,7 @@ export default function Accueil() {
             } catch (error) {
                 console.error("Erreur en récupérant les données :", error);
             } finally {
-                setLoading(false); // arrête le loader quoi qu'il arrive
+                setLoading(false);
             }
         };
         fetchData();
@@ -49,12 +57,14 @@ export default function Accueil() {
 
     return (
         <View style={styles.container}>
-            <Text>
-                <Text>Nom  : {userData?.displayName ?? "Non renseigné"}</Text>
-
-
-                <Text>Salary : {userData?.salary ?? "Non renseigné"}</Text>
-            </Text>
+            <View style={styles.card}>
+                <View style={styles.amoundAndData}>
+                    <Text style={styles.amountColor}>Solde : {userData ? userData.salary : "Chargement..."}.-</Text>
+                    <Text style={styles.dataColor} >{formattedDate}</Text>
+                </View>
+                <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>
+                <Text style={styles.amountInfos}>Dernier Achat :</Text>
+            </View>
         </View>
     )
 }
@@ -64,5 +74,41 @@ const styles = StyleSheet.create({
         backgroundColor: "#f3eeeaff",
         ...StyleSheet.absoluteFillObject,
         paddingTop: 100,
+        alignItems: "center",
+    },
+    helloText: {
+        fontSize: 20,
+        marginLeft: 10,
+    },
+    card: {
+        backgroundColor: "#fff",
+        padding: 20,
+        borderRadius: 15,
+        marginBottom: 20,
+        width: "100%",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+        height: 90,
+        maxWidth: 300,
+    },
+    amountInfos: {
+        marginTop: 6,
+        color: "#555555",
+        fontSize: 10
+    },
+    amoundAndData: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    dataColor: {
+        color: "#545353ff",
+        fontSize: 10,
+        marginTop: 2
+    },
+    amountColor: {
+        color: "#007AFF",
     }
 })
