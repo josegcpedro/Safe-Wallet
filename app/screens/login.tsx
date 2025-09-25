@@ -17,12 +17,10 @@ export default function Login() {
     const signIn = async () => {
         setLoading(true);
         try {
-            const response = await signInWithEmailAndPassword(auth, email, password);
-            console.log(response);
+            await signInWithEmailAndPassword(auth, email, password);
             router.push("/screens/home")
         } catch (error: any) {
             console.log(error);
-            alert('Sign in failed: ' + error.message)
         } finally {
             setLoading(false);
         }
