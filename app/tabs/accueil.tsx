@@ -56,7 +56,7 @@ export default function Params() {
         <View style={styles.container}>
             <View style={styles.card}>
                 <View style={styles.amoundAndData}>
-                    <Text style={styles.amountColor}>Solde : {userData && userData.ActualSold ? userData.ActualSold : "Chargement..."}.-</Text>
+                    <Text style={styles.amountColor}>Solde : {userData && userData.sold ? userData.sold : "Chargement..."}.-</Text>
                     <Text style={styles.dataColor} >{formattedDate}</Text>
                 </View>
                 <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>
