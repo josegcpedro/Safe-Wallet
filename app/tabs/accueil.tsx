@@ -3,7 +3,7 @@ import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { useEffect, useState } from "react";
 
-export default function Accueil() {
+export default function Params() {
     const [currentUid, setCurrentUid] = useState<string | null>(null);
     const [userData, setUserData] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
@@ -14,8 +14,6 @@ export default function Accueil() {
         month: "long",
         year: "numeric",
     });
-
-
 
     useEffect(() => {
         const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(user => {
@@ -40,7 +38,6 @@ export default function Accueil() {
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    console.log("Données collecté");
                     setUserData(data);
                 } else {
                     console.log("Pas encore de données pour cet utilisateur.");
@@ -59,7 +56,7 @@ export default function Accueil() {
         <View style={styles.container}>
             <View style={styles.card}>
                 <View style={styles.amoundAndData}>
-                    <Text style={styles.amountColor}>Solde : {userData ? userData.salary : "Chargement..."}.-</Text>
+                    <Text style={styles.amountColor}>Solde : {userData && userData.ActualSold ? userData.ActualSold : "Chargement..."}.-</Text>
                     <Text style={styles.dataColor} >{formattedDate}</Text>
                 </View>
                 <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>

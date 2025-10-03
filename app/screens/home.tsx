@@ -11,31 +11,33 @@ export default function Home() {
 
     return (
         <View style={styles.container}>
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                headerShown: false, 
-                tabBarIcon: ({ focused, color, size }) => {
-                    let iconName: keyof typeof Ionicons.glyphMap;
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    headerShown: false,
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName: keyof typeof Ionicons.glyphMap;
 
-                    if (route.name === 'Accueil') {
-                        iconName = focused ? 'home' : 'home-outline';
-                    } else if (route.name === 'Paramètres') {
-                        iconName = focused ? 'settings' : 'settings-outline';
-                    }
+                        if (route.name === 'Accueil') {
+                            iconName = focused ? 'home' : 'home-outline';
+                        } else if (route.name === 'Paramètres') {
+                            iconName = focused ? 'settings' : 'settings-outline';
+                        }
 
-                    return <Ionicons name={iconName} size={size} color={color} />;
-                },
-                tabBarActiveTintColor: '#007AFF',
-                tabBarInactiveTintColor: '#555',
-            })}
+                        return <Ionicons name={iconName} size={size} color={color} />;
+                    },
+                    tabBarActiveTintColor: '#007AFF',
+                    tabBarInactiveTintColor: '#555',
+                })}
 
-        >
-            <Tab.Screen name="Accueil" component={Accueil} />
-            <Tab.Screen name="Paramètres" component={Params} />
-        </Tab.Navigator>
+            >
+
+                <Tab.Screen name="Accueil" component={Accueil} />
+                <Tab.Screen name="Paramètres" component={Params} />
+            </Tab.Navigator>
         </View>
 
     );
+
 }
 
 const styles = StyleSheet.create({

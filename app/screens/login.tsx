@@ -1,7 +1,7 @@
-import { FIREBASE_AUTH } from "@/src/firebase/FireBaseConfig";
+import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, getIdToken, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from "react-native";
 
@@ -30,6 +30,8 @@ export default function Login() {
         setLoading(true);
         try {
             const response = await createUserWithEmailAndPassword(auth, email, password);
+            const User = response.user;
+            const UserToken = User.getIdToken();
             Alert.prompt(
                 "Bienvenue !",
                 "Quel est votre nom ?",
@@ -37,6 +39,7 @@ export default function Login() {
                     if (name) {
                         await updateProfile(response.user, { displayName: name });
                     }
+                    console.log(UserToken)
                     router.push("/screens/home")
                 }
             );
@@ -46,6 +49,7 @@ export default function Login() {
         } finally {
             setLoading(false);
         }
+
     }
 
     return (
