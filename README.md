@@ -151,3 +151,4 @@ to display i use `Nom: {userData?.displayName ?? "Inconnu"}`if displayName does 
 - **`setDoc`**  
   Writes data to a document. If the document does not exist, it will be created.  
   Example: `await setDoc(docRef, { name: "John", age: 30 });`
+
