@@ -1,6 +1,6 @@
-import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -21,30 +21,31 @@ export default function Params() {
         });
         return unsubscribe;
     }, []);
+// Déplacer fetchData ici, accessible partout dans le composant
+const fetchData = async () => {
+    if (!currentUid) return;
+    setLoading(true);
+    try {
+        const docRef = doc(FIREBASE_DB, "users", currentUid);
+        const docSnap = await getDoc(docRef);
 
-    useEffect(() => {
-        if (!currentUid) return;
+        if (docSnap.exists()) {
+            setUserData(docSnap.data());
+        } else {
+            console.log("Pas encore de données pour cet utilisateur.");
+            setUserData(null);
+        }
+    } catch (error) {
+        console.error("Erreur en récupérant les données :", error);
+    } finally {
+        setLoading(false);
+    }
+};
 
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const docRef = doc(FIREBASE_DB, "users", currentUid);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    setUserData(docSnap.data());
-                } else {
-                    console.log("Pas encore de données pour cet utilisateur.");
-                    setUserData(null);
-                }
-            } catch (error) {
-                console.error("Erreur en récupérant les données :", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, [currentUid]);
+// UseEffect pour récupérer les données au début et quand currentUid change
+useEffect(() => {
+    fetchData();
+}, [currentUid]);
 
     if (loading) {
         return (
@@ -54,6 +55,38 @@ export default function Params() {
         );
     }
 
+    const changeMensualSalary = async (currentUid: string) => {
+        Alert.prompt(
+            "Quel est le nouveau salaire?",
+            "Entrez le nouveau salaire",
+            async (salary) => {
+                if (!salary) {
+                    Alert.alert("Annulé", "Aucun salaire saisi");
+                    return;
+                }
+
+                const salaryNumber = Number(salary);
+                if (isNaN(salaryNumber)) {
+                    Alert.alert("Erreur", "Veuillez entrer un nombre valide");
+                    return;
+                }
+
+                try {
+                    const userDocRef = doc(FIREBASE_DB, "users", currentUid);
+                    await updateDoc(userDocRef, { salary: salaryNumber });
+                    Alert.alert("Succès", "Le salaire a été mis à jour !");
+                    await fetchData()
+                } catch (error) {
+                    console.error("Erreur lors de la mise à jour :", error);
+                    Alert.alert("Erreur", "Impossible de mettre à jour le salaire");
+                }
+            },
+            "plain-text"
+        );
+    };
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.card}>
@@ -61,7 +94,16 @@ export default function Params() {
                     Salaire mensuel: {userData?.salary ?? "Pas de données"}.-
                 </Text>
             </View>
-
+            <TouchableOpacity
+                style={styles.changeMensualSalaryButton}
+                onPress={() => {
+                    if(currentUid){
+                        changeMensualSalary(currentUid)
+                    }
+                }}
+            >
+                <Text style={{ color: "#ffffffff", }}>Modifier le salaire</Text>
+            </TouchableOpacity>
             <TouchableOpacity
                 style={styles.logoutButton}
                 onPress={() => {
@@ -69,7 +111,7 @@ export default function Params() {
                     router.push("/");
                 }}
             >
-                <Text style={{ color: "#ffffffff",}}>Quitter</Text>
+                <Text style={{ color: "#ffffffff", }}>Quitter</Text>
             </TouchableOpacity>
 
         </View>
@@ -111,7 +153,20 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
-        position:"absolute",
-        bottom:50,
+        position: "absolute",
+        bottom: 30,
     },
+    changeMensualSalaryButton: {
+        backgroundColor: "#1ed254ae",
+        width: 200,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 15,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        position: "absolute",
+        top: 200,
+    }
 });
