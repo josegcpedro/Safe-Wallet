@@ -173,6 +173,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         paddingVertical: 12,
         borderRadius: 10,
+        borderWidth: 1,
+        borderColor: "#CCCCCC",
         backgroundColor: "#FFFFFF"
     },
     returnButton: {
