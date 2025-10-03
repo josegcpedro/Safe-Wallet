@@ -1,13 +1,15 @@
-import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+
 
 export default function Params() {
     const [currentUid, setCurrentUid] = useState<string | null>(null);
-    const [userData, setUserData] = useState<any>(null)
-    const [loading, setLoading] = useState<boolean>(true)
-
+    const [userData, setUserData] = useState<any>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const router = useRouter();
     useEffect(() => {
         const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(user => {
             if (user) {
@@ -30,8 +32,7 @@ export default function Params() {
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    setUserData(data);
+                    setUserData(docSnap.data());
                 } else {
                     console.log("Pas encore de données pour cet utilisateur.");
                     setUserData(null);
@@ -45,15 +46,34 @@ export default function Params() {
         fetchData();
     }, [currentUid]);
 
+    if (loading) {
+        return (
+            <View style={[styles.container, { justifyContent: "center" }]}>
+                <ActivityIndicator size="large" color="#007AFF" />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-                <View>
-                    <Text>Votre salaire est de : {userData && userData.salary ? userData.salary : "Chargement..."}.-</Text>
-                </View>
+                <Text style={styles.mensualSalary}>
+                    Salaire mensuel: {userData?.salary ?? "Pas de données"}.-
+                </Text>
             </View>
+
+            <TouchableOpacity
+                style={styles.logoutButton}
+                onPress={() => {
+                    FIREBASE_AUTH.signOut();
+                    router.push("/");
+                }}
+            >
+                <Text style={{ color: "#ffffffff",}}>Quitter</Text>
+            </TouchableOpacity>
+
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -66,17 +86,32 @@ const styles = StyleSheet.create({
 
     card: {
         backgroundColor: "#fff",
-        alignItems:"center",
+        alignItems: "center",
         borderRadius: 15,
         marginBottom: 20,
         width: "100%",
+        maxWidth: 300,
+        height: 50,
+        justifyContent: 'center',
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.1,
         shadowRadius: 5,
-        elevation: 3,
-        height: 90,
-        maxWidth: 300,
     },
-})
-
+    mensualSalary: {
+        color: "#007AFF",
+    },
+    logoutButton: {
+        backgroundColor: "#f84141ae",
+        width: 150,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 15,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        position:"absolute",
+        bottom:50,
+    },
+});
