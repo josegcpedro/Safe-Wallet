@@ -69,7 +69,7 @@ export default function Params() {
                     router.push("/");
                 }}
             >
-                <Text style={{ color: "#007AFF", fontWeight: "bold" }}>Quitter</Text>
+                <Text style={{ color: "#ffffffff",}}>Quitter</Text>
             </TouchableOpacity>
 
         </View>
@@ -102,15 +102,16 @@ const styles = StyleSheet.create({
         color: "#007AFF",
     },
     logoutButton: {
-        backgroundColor: "#fff",
+        backgroundColor: "#f84141ae",
         width: 150,
         height: 50,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 15,
-        shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 3,
+        position:"absolute",
+        bottom:50,
     },
 });
