@@ -1,8 +1,9 @@
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
+import { useScrollToTop } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from "react-native";
 
@@ -53,14 +54,20 @@ export default function Login() {
                     {
                         email,
                         name,
-                        salary: Number(salary), // convertir en nombre
-                        sold: Number(sold),     // convertir en nombre
+                        salary: Number(salary),
+                        sold: Number(sold),
                     },
-                    { merge: true } // merge pour ne pas écraser l'email
+                    { merge: true }
                 );
-                Alert.alert("Succès", "Informations supplémentaires enregistrées !");
-                setShowInfo(false); // tu peux revenir à l'écran principal ou router ailleurs
-                router.push("/screens/home"); // redirection vers l'accueil
+
+                const tagRef = doc(collection(FIREBASE_DB, "users", user.uid, "tags"),"default")
+                await setDoc(tagRef,{
+                    name: "",
+                })
+
+                Alert.alert("Succès", "Informations supplémentaires!");
+                setShowInfo(false);
+                router.push("/screens/home");
             }
         } catch (error: any) {
             console.log(error);
@@ -69,6 +76,7 @@ export default function Login() {
             setLoading(false);
         }
     };
+
 
     return (
 
@@ -184,7 +192,7 @@ const styles = StyleSheet.create({
     },
     InfoButton: {
         borderRadius: 10,
-        width:350,
+        width: 350,
         backgroundColor: "#FFFFFF"
     },
 
