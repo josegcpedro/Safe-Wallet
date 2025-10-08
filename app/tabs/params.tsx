@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 
@@ -21,31 +21,30 @@ export default function Params() {
         });
         return unsubscribe;
     }, []);
-// Déplacer fetchData ici, accessible partout dans le composant
-const fetchData = async () => {
-    if (!currentUid) return;
-    setLoading(true);
-    try {
-        const docRef = doc(FIREBASE_DB, "users", currentUid);
-        const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            setUserData(docSnap.data());
-        } else {
-            console.log("Pas encore de données pour cet utilisateur.");
-            setUserData(null);
+    const fetchData = async () => {
+        if (!currentUid) return;
+        setLoading(true);
+        try {
+            const docRef = doc(FIREBASE_DB, "users", currentUid);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setUserData(docSnap.data());
+            } else {
+                console.log("Pas encore de données pour cet utilisateur.");
+                setUserData(null);
+            }
+        } catch (error) {
+            console.error("Erreur en récupérant les données :", error);
+        } finally {
+            setLoading(false);
         }
-    } catch (error) {
-        console.error("Erreur en récupérant les données :", error);
-    } finally {
-        setLoading(false);
-    }
-};
+    };
 
-// UseEffect pour récupérer les données au début et quand currentUid change
-useEffect(() => {
-    fetchData();
-}, [currentUid]);
+    useEffect(() => {
+        fetchData();
+    }, [currentUid]);
 
     if (loading) {
         return (
@@ -85,6 +84,27 @@ useEffect(() => {
         );
     };
 
+    const addTag = async (currentUid: string) => {
+        Alert.prompt(
+            "Quel étiquette voulez-vous ajouter?",
+            "Entrez la nouvelle étiquette",
+            async (tag) => {
+                if (!tag) {
+                    Alert.alert("Annulé", "Aucune étiquette sasie");
+                    return
+                }
+                try {
+                    const tagDocRef = doc(FIREBASE_DB, "users", currentUid, "tags", tag);
+                    await setDoc(tagDocRef, { name: tag }, { merge: true });
+                    Alert.alert("Succès", "Le salaire a été mis a jour!");
+                } catch (error) {
+                    console.error(error);
+                    Alert.alert("Erreur", "Veuillez essayer plus tard");
+                }
+            }
+        )
+    }
+
 
 
     return (
@@ -97,12 +117,22 @@ useEffect(() => {
             <TouchableOpacity
                 style={styles.changeMensualSalaryButton}
                 onPress={() => {
-                    if(currentUid){
+                    if (currentUid) {
                         changeMensualSalary(currentUid)
                     }
                 }}
             >
                 <Text style={{ color: "#ffffffff", }}>Modifier le salaire</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.addTagStyle}
+                onPress={() => {
+                    if (currentUid) {
+                        addTag(currentUid)
+                    }
+                }}
+            >
+                <Text style={{ color: "#ffffffff", }}>Ajouter une étiquette</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.logoutButton}
@@ -168,5 +198,18 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         position: "absolute",
         top: 200,
+    },
+    addTagStyle: {
+        backgroundColor: "#1e57d2ae",
+        width: 200,
+        height: 50,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 15,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        position: "absolute",
+        bottom: 100
     }
 });

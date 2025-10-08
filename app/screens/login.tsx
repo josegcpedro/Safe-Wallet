@@ -1,6 +1,5 @@
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
-import { useScrollToTop } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc, collection } from "firebase/firestore";

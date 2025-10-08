@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { useEffect, useState } from "react";
@@ -62,7 +62,15 @@ export default function Params() {
                 <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>
                 <Text style={styles.amountInfos}>Dernier Achat :</Text>
             </View>
+            <View>
+                <TouchableOpacity
+                    style={styles.addExprenses}
+                >
+                    <Text style={{ color: "#555555bb",fontSize:40 }}>+</Text>
+                </TouchableOpacity>
+            </View>
         </View>
+
     )
 }
 
@@ -107,5 +115,14 @@ const styles = StyleSheet.create({
     },
     amountColor: {
         color: "#007AFF",
-    }
+    },
+    addExprenses: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 550,
+        backgroundColor: "#ffffff",
+        borderRadius: 50,
+        width: 65,
+        height: 65,
+    },
 })
