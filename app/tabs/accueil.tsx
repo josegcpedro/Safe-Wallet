@@ -2,15 +2,19 @@ import { Text, View, StyleSheet, TouchableOpacity, TextInput } from "react-nativ
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { doc, getDoc, getDocs, collection, } from "firebase/firestore"
 import DropDownPicker from 'react-native-dropdown-picker';
-import React, { useEffect, useState } from "react";
-import { router } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+
+interface AccueilProps {
+    setShowCard: React.Dispatch<React.SetStateAction<boolean>>;
+    showCard: boolean;
+}
 
 
-export default function Accueil() {
+export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     const [currentUid, setCurrentUid] = useState<string | null>(null);
     const [userData, setUserData] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
-    const [showCard, setShowCard] = useState<boolean>(false);
     const [newExpenseTitle, setNewExpenseTitle] = useState("");
     const [newExpenseAmount, setNewExpenseAmount] = useState("");
     const [tags, setTags] = useState<any[]>([]);
@@ -63,6 +67,13 @@ export default function Accueil() {
     }, [currentUid]);
 
 
+    useFocusEffect(
+        useCallback(() => {
+            return () => {
+                setShowCard(false);
+            };
+        }, [])
+    );
 
     useEffect(() => {
         if (!currentUid) return;
@@ -122,9 +133,9 @@ export default function Accueil() {
                         setItems={setItems}
                         placeholder="Choisir un tag"
                         containerStyle={{ marginTop: 10, width: "100%" }}
+                        textStyle={{ color: '#00000097' }} // couleur rouge
+                        style={styles.dropdown}
                     />
-
-
 
                     <TouchableOpacity style={styles.submitButton}>
                         <Text style={styles.submitText}>Ajouter</Text>
@@ -271,4 +282,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#555",
     },
+    dropdown: {
+        borderColor: "#55555535",
+        backgroundColor: "#8888880c",
+        justifyContent: "center",
+    }
+
 });

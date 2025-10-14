@@ -4,10 +4,12 @@ import { StyleSheet, View } from "react-native";
 import Accueil from "../tabs/accueil";
 import Params from "../tabs/params";
 import { Ionicons } from '@expo/vector-icons';
+import { useState } from "react";
 
 
 export default function Home() {
     const Tab = createBottomTabNavigator();
+    const [showCard, setShowCard] = useState<boolean>(false);
 
     return (
         <View style={styles.container}>
@@ -31,7 +33,10 @@ export default function Home() {
 
             >
 
-                <Tab.Screen name="Accueil" component={Accueil} />
+                <Tab.Screen name="Accueil">
+                    {() => <Accueil setShowCard={setShowCard} showCard={showCard}/>}
+                </Tab.Screen>
+
                 <Tab.Screen name="Paramètres" component={Params} />
             </Tab.Navigator>
         </View>

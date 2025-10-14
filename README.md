@@ -151,3 +151,9 @@ to display i use `Nom: {userData?.displayName ?? "Inconnu"}`if displayName does 
 - **`setDoc`**  
   Writes data to a document. If the document does not exist, it will be created.  
   Example: `await setDoc(docRef, { name: "John", age: 30 });`
+### UseFocusEffet
+
+- **`What is usefocuseffect`**  
+  Is a hook from react navigation, it executes the code when a screen becomes "active" (focus) and clean when screen is "inactive"
+- **`What is useCallBack`**  
+  Memorise a function so, react dont need to create every time, it executes only when is called.
