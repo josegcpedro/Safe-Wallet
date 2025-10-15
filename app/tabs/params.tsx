@@ -1,9 +1,8 @@
 import { Text, View, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "expo-router";
-
 
 export default function Params() {
     const [currentUid, setCurrentUid] = useState<string | null>(null);
@@ -11,7 +10,7 @@ export default function Params() {
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
     useEffect(() => {
-        const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(user => {
+        const unsubscribe = FIREBASE_AUTH.onAuthStateChanged((user: { uid: SetStateAction<string | null>; }) => {
             if (user) {
                 setCurrentUid(user.uid);
             } else {
@@ -80,7 +79,6 @@ export default function Params() {
                     Alert.alert("Erreur", "Impossible de mettre à jour le salaire");
                 }
             },
-            "plain-text"
         );
     };
 

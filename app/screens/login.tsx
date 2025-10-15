@@ -59,9 +59,15 @@ export default function Login() {
                     { merge: true }
                 );
 
-                const tagRef = doc(collection(FIREBASE_DB, "users", user.uid, "tags"),"default")
-                await setDoc(tagRef,{
-                    name: "",
+                const tagRef = doc(collection(FIREBASE_DB, "users", user.uid, "tags"), "default")
+                await setDoc(tagRef, {
+                    name:"",
+                })
+                const expensesRef = doc(collection(FIREBASE_DB, "users", user.uid, "expenses"), "default")
+                await setDoc(expensesRef, {
+                    expenseTitle: "",
+                    amout: "",
+                    tag: ""
                 })
 
                 Alert.alert("Succès", "Informations supplémentaires!");

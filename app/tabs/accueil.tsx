@@ -1,6 +1,6 @@
-import { Text, View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
-import { doc, getDoc, getDocs, collection, } from "firebase/firestore"
+import { doc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore"
 import DropDownPicker from 'react-native-dropdown-picker';
 import React, { useCallback, useEffect, useState } from "react";
 import { router, useFocusEffect } from "expo-router";
@@ -18,10 +18,10 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     const [newExpenseTitle, setNewExpenseTitle] = useState("");
     const [newExpenseAmount, setNewExpenseAmount] = useState("");
     const [tags, setTags] = useState<any[]>([]);
-    const [selectedTag, setSelectedTag] = useState("");
-    const [open, setOpen] = useState(false); // ouvre/ferme le dropdown
-    const [value, setValue] = useState<string | null>(null); // tag sélectionné
-    const [items, setItems] = useState<any[]>([]); // tous les tags
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState<string | null>(null);
+    const [items, setItems] = useState<any[]>([]);
+
 
 
     const today = new Date();
@@ -32,7 +32,7 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     });
 
     useEffect(() => {
-        const unsubscribe = FIREBASE_AUTH.onAuthStateChanged(user => {
+        const unsubscribe = FIREBASE_AUTH.onAuthStateChanged((user: { uid: React.SetStateAction<string | null>; }) => {
             if (user) {
                 setCurrentUid(user.uid);
             } else {
@@ -43,26 +43,28 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
         return unsubscribe;
     }, []);
 
+    const fetchData = async () => {
+        if (!currentUid) return;
+        setLoading(true);
+        try {
+            const docRef = doc(FIREBASE_DB, "users", currentUid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setUserData(docSnap.data());
+            } else {
+                setUserData(null);
+            }
+        } catch (error) {
+            console.error("Erreur en récupérant les données :", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+
     useEffect(() => {
         if (!currentUid) return;
 
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const docRef = doc(FIREBASE_DB, "users", currentUid);
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    setUserData(docSnap.data());
-                } else {
-                    setUserData(null);
-                }
-            } catch (error) {
-                console.error("Erreur en récupérant les données :", error);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchData();
     }, [currentUid]);
 
@@ -70,6 +72,7 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     useFocusEffect(
         useCallback(() => {
             return () => {
+                setOpen(false);
                 setShowCard(false);
             };
         }, [])
@@ -88,7 +91,7 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                     id: doc.id,
                     ...doc.data()
                 }));
-                setItems(allTags.map(tag => ({
+                setItems(allTags.map((tag: { name: any; id: any; }) => ({
                     label: tag.name,
                     value: tag.id,
                 })));
@@ -102,6 +105,43 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
         fetchTags();
     }, [currentUid, showCard]);
 
+
+    const addExpenses = async () => {
+        alert(newExpenseTitle + newExpenseAmount + value);
+        setShowCard(false);
+    }
+    useEffect(() => {
+        fetchData();
+    }, [currentUid]);
+
+    const modifySold = async () => {
+        Alert.prompt(
+            "Quel est votre solde?",
+            "Entrez le nouveau solde",
+            async (sold) => {
+                if (!sold) {
+                    Alert.alert("Annulé", "Aucun salaire saisi");
+                    return;
+                }
+
+                const soldNumber = Number(sold);
+                if (isNaN(soldNumber)) {
+                    Alert.alert("Erreur", "Veuillez entrer un nombre valide");
+                    return
+                }
+
+                try {
+                    const userDocRef = doc(FIREBASE_DB, "users", currentUid);
+                    await updateDoc(userDocRef, { sold: soldNumber });
+                    Alert.alert("Solde mis a jour!");
+                    await fetchData();
+                } catch (error) {
+                    console.error("Erreur :", error);
+                    Alert.alert("Erreur", "Impossible de mettre à jour le solde !");
+                }
+            }
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -133,11 +173,11 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                         setItems={setItems}
                         placeholder="Choisir un tag"
                         containerStyle={{ marginTop: 10, width: "100%" }}
-                        textStyle={{ color: '#00000097' }} // couleur rouge
+                        textStyle={{ color: '#00000097' }}
                         style={styles.dropdown}
                     />
 
-                    <TouchableOpacity style={styles.submitButton}>
+                    <TouchableOpacity style={styles.submitButton} onPress={() => addExpenses()}>
                         <Text style={styles.submitText}>Ajouter</Text>
                     </TouchableOpacity>
 
@@ -149,9 +189,11 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                 <>
                     <View style={styles.card}>
                         <View style={styles.amoundAndData}>
-                            <Text style={styles.amountColor}>
-                                Solde : {userData?.sold ?? "Chargement..."} .-
-                            </Text>
+                            <TouchableOpacity onPress={() => modifySold()}>
+                                <Text style={styles.amountColor}>
+                                    Solde : {userData?.sold ?? "Chargement..."} .-
+                                </Text>
+                            </TouchableOpacity>
                             <Text style={styles.dataColor}>{formattedDate}</Text>
                         </View>
                         <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>
@@ -286,6 +328,8 @@ const styles = StyleSheet.create({
         borderColor: "#55555535",
         backgroundColor: "#8888880c",
         justifyContent: "center",
-    }
+    },
 
 });
+
+
