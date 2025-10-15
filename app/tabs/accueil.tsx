@@ -10,7 +10,6 @@ interface AccueilProps {
     showCard: boolean;
 }
 
-
 export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     const [currentUid, setCurrentUid] = useState<string | null>(null);
     const [userData, setUserData] = useState<any>(null)
@@ -21,8 +20,7 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState<string | null>(null);
     const [items, setItems] = useState<any[]>([]);
-
-
+    const [expensesData, setExpensesData] = useState<any[]>([]);
 
     const today = new Date();
     const formattedDate = today.toLocaleDateString("fr-FR", {
@@ -61,13 +59,32 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
         }
     };
 
+    const fetchExpensesData = async () => {
+        if (!currentUid) return;
+        setLoading(true);
+        try {
+            const expensesRef = collection(FIREBASE_DB, "users", currentUid, "expenses");
+            const querySnapshot = await getDocs(expensesRef);
+
+            const data = querySnapshot.docs.map((doc: { id: any; data: () => any; }) => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+
+            setExpensesData(data);
+        } catch (error) {
+            console.error("Erreur lors de la récupération des dépenses:", error);
+            setExpensesData([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         if (!currentUid) return;
-
+        fetchExpensesData();
         fetchData();
     }, [currentUid]);
-
 
     useFocusEffect(
         useCallback(() => {
@@ -101,7 +118,6 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                 console.error("Erreur en récupérant les tags", error);
             }
         };
-
         fetchTags();
     }, [currentUid, showCard]);
 
@@ -181,8 +197,8 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                         <Text style={styles.submitText}>Ajouter</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setShowCard(false)}>
-                        <Text style={styles.closeText}>✕</Text>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => { setOpen(false); setShowCard(false); }}>
+                        <Text style={styles.closeText}>x</Text>
                     </TouchableOpacity>
                 </View>
             ) : (
@@ -197,7 +213,9 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                             <Text style={styles.dataColor}>{formattedDate}</Text>
                         </View>
                         <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>
-                        <Text style={styles.amountInfos}>Dernier Achat :</Text>
+                        <Text style={styles.amountInfos}>
+                            Dernier achat : {expensesData.length > 0 ? expensesData[expensesData.length - 1].expenseTitle : "Aucune dépense"}
+                        </Text>
                     </View>
                     <TouchableOpacity
                         style={styles.addExprenses}
@@ -205,6 +223,7 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                     >
                         <Text style={{ color: "#fff", fontSize: 40 }}>+</Text>
                     </TouchableOpacity>
+
                 </>
             )}
         </View>
@@ -315,12 +334,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 10,
         right: 10,
+        height: 30,
+        width: 20,
         backgroundColor: "#eee",
         borderRadius: 15,
         padding: 5,
     },
     closeText: {
-        fontSize: 16,
         fontWeight: "bold",
         color: "#555",
     },

@@ -138,7 +138,7 @@ The second useEffect fetches the data. I use a try-catch block, and inside, I tr
 and then getting the doc with `const docSnap = await getDoc(docRef);` then if `docSnap.exists` i get the data with a const `const data = docSnap.data();` and set the userData with the data else a error shows up, then i do the function on the end of the useEffect by doing `fetchData()`
 #### 4. Display data
 to display i use `Nom: {userData?.displayName ?? "Inconnu"}`if displayName does not exist it shows `Inconnu`
-### Firebase Firestore Functions
+### Firebase Firestore Functionsa
 
 - **`doc`**  
   Creates a reference to a specific document in a Firestore collection.  
@@ -157,3 +157,17 @@ to display i use `Nom: {userData?.displayName ?? "Inconnu"}`if displayName does 
   Is a hook from react navigation, it executes the code when a screen becomes "active" (focus) and clean when screen is "inactive"
 - **`What is useCallBack`**  
   Memorise a function so, react dont need to create every time, it executes only when is called.
+
+### fetchDataExpenses
+
+- **`function`**
+    First, I use a try...catch block.
+    Inside the try, I declare a constant expensesRef that points to the Firestore collection "users/{currentUid}/expenses".
+    Then I use getDocs(expensesRef) to get all the documents in that collection and store the result in querySnapshot.
+    Next, I create a data array by mapping through querySnapshot.docs.
+    For each document, I return an object containing the document’s id and all its data using the spread operator (...doc.data()).
+    Finally, I update the state with setExpensesData(data).
+
+    If an error occurs, the catch block logs the error and sets an empty array with setExpensesData([]).
+
+    The finally block sets setLoading(false) to stop the loading indicator.

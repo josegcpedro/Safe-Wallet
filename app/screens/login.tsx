@@ -59,15 +59,15 @@ export default function Login() {
                     { merge: true }
                 );
 
-                const tagRef = doc(collection(FIREBASE_DB, "users", user.uid, "tags"), "default")
+                const tagRef = doc(collection(FIREBASE_DB, "users", user.uid, "tags"), "Food")
                 await setDoc(tagRef, {
-                    name:"",
+                    name:"Food",
                 })
-                const expensesRef = doc(collection(FIREBASE_DB, "users", user.uid, "expenses"), "default")
+                const expensesRef = doc(collection(FIREBASE_DB, "users", user.uid, "expenses"), "FirstExpense")
                 await setDoc(expensesRef, {
-                    expenseTitle: "",
-                    amout: "",
-                    tag: ""
+                    expenseTitle: "Safe-Wallet",
+                    amout: "0",
+                    tag: "Default"
                 })
 
                 Alert.alert("Succès", "Informations supplémentaires!");
@@ -121,7 +121,6 @@ export default function Login() {
                 ) : (
                     <>
 
-                        {/* Nouvelle view pour plus d'infos */}
                         <Text style={{ marginBottom: 10 }}>Merci de compléter vos informations :</Text>
                         <TextInput
                             placeholder="Nom d'affichage"

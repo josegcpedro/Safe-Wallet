@@ -94,7 +94,7 @@ export default function Params() {
                 try {
                     const tagDocRef = doc(FIREBASE_DB, "users", currentUid, "tags", tag);
                     await setDoc(tagDocRef, { name: tag }, { merge: true });
-                    Alert.alert("Succès", "Le salaire a été mis a jour!");
+                    Alert.alert("Succès", "Tag ajouté!");
                 } catch (error) {
                     console.error(error);
                     Alert.alert("Erreur", "Veuillez essayer plus tard");
