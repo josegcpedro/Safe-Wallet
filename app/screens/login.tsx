@@ -1,7 +1,7 @@
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { Button } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, } from "firebase/auth";
 import { doc, setDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from "react-native";
