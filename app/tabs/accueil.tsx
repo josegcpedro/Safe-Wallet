@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
-import { doc, getDoc, getDocs, collection, updateDoc } from "firebase/firestore"
+import { doc, getDoc, setDoc, getDocs, collection, updateDoc, serverTimestamp } from "firebase/firestore"
 import DropDownPicker from 'react-native-dropdown-picker';
 import React, { useCallback, useEffect, useState } from "react";
 import { router, useFocusEffect } from "expo-router";
@@ -15,13 +15,16 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     const [userData, setUserData] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
     const [newExpenseTitle, setNewExpenseTitle] = useState("");
-    const [newExpenseAmount, setNewExpenseAmount] = useState("");
+    const [newExpenseAmount, setNewExpenseAmount] = useState(0);
     const [tags, setTags] = useState<any[]>([]);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState<string | null>(null);
     const [items, setItems] = useState<any[]>([]);
     const [expensesData, setExpensesData] = useState<any[]>([]);
+    const [sold, setSold] = useState<number>(0);
 
+
+    let total = 0;
     const today = new Date();
     const formattedDate = today.toLocaleDateString("fr-FR", {
         day: "numeric",
@@ -122,13 +125,75 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     }, [currentUid, showCard]);
 
 
+    const getLastExpense = (expensesData: any[]) => {
+        if (expensesData.length === 0) return null;
+
+        const lastExpense = expensesData.reduce((latest, current) => {
+            const currentDate = current.createdAt?.toDate ? current.createdAt.toDate() : new Date(current.createdAt);
+            const latestDate = latest.createdAt?.toDate ? latest.createdAt.toDate() : new Date(latest.createdAt)
+
+            return currentDate > latestDate ? current : latest;
+        })
+        return lastExpense
+    };
+
+    const getDayExpenses = (expensesData: any[]) => {
+        if (expensesData.length === 0) return null;
+
+
+        const today = new Date();
+
+        for (let expense of expensesData) {
+            const date = expense.createdAt?.toDate ? expense.createdAt?.toDate() : new Date(expense.createdAt);
+
+            if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                total += expense.amount
+            }
+        }
+        return total;
+    };
+
     const addExpenses = async () => {
-        alert(newExpenseTitle + newExpenseAmount + value);
-        setShowCard(false);
-    }
+        if (!newExpenseTitle || !newExpenseAmount || !value) {
+            alert("Veuillez tout remplir !");
+            return;
+        }
+
+        try {
+            const expenseRef = doc(FIREBASE_DB, "users", currentUid, "expenses", newExpenseTitle);
+            await setDoc(expenseRef, {
+                expenseTitle: newExpenseTitle,
+                amount: newExpenseAmount,
+                tag: value,
+                createdAt: serverTimestamp()
+            }, { merge: true });
+
+            const userRef = doc(FIREBASE_DB, "users", currentUid);
+            const newSold = (userData?.sold ?? 0) - Number(newExpenseAmount);
+            await updateDoc(userRef, { sold: newSold });
+
+            setSold(newSold);
+
+            alert("Dépense ajoutée avec succès !");
+            setNewExpenseTitle("");
+            setNewExpenseAmount(0);
+            setShowCard(false);
+            await fetchExpensesData();
+            await fetchData();
+        } catch (error) {
+            console.error(error);
+            Alert.alert("Erreur");
+        }
+    };
+
+
+    const lastExpense = getLastExpense(expensesData);
+
     useEffect(() => {
         fetchData();
     }, [currentUid]);
+
+
 
     const modifySold = async () => {
         Alert.prompt(
@@ -173,12 +238,12 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                         onChangeText={(text) => setNewExpenseTitle(text)}
                     />
                     <TextInput
-                        value={newExpenseAmount}
+                        value={newExpenseAmount.toString()}
                         style={styles.input}
                         placeholder="Montant"
                         placeholderTextColor="#888"
                         keyboardType="numeric"
-                        onChangeText={(text) => setNewExpenseAmount(text)}
+                        onChangeText={(text) => setNewExpenseAmount(Number(text))}
                     />
                     <DropDownPicker
                         open={open}
@@ -209,12 +274,16 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                                 <Text style={styles.amountColor}>
                                     Solde : {userData?.sold ?? "Chargement..."} .-
                                 </Text>
+
                             </TouchableOpacity>
                             <Text style={styles.dataColor}>{formattedDate}</Text>
                         </View>
-                        <Text style={styles.amountInfos}>Depensé aujourd'hui :</Text>
                         <Text style={styles.amountInfos}>
-                            Dernier achat : {expensesData.length > 0 ? expensesData[expensesData.length - 1].expenseTitle : "Aucune dépense"}
+                            Dépensé aujourd'hui : {getDayExpenses(expensesData)}.-
+                        </Text>
+
+                        <Text style={styles.amountInfos}>
+                            Dernier achat : {lastExpense ? `${lastExpense.expenseTitle}` : "Aucune dépense"}
                         </Text>
                     </View>
                     <TouchableOpacity
