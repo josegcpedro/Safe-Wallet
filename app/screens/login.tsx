@@ -17,6 +17,9 @@ export default function Login() {
     const [sold, setSold] = useState('');
     const auth = FIREBASE_AUTH;
 
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+
     const signIn = async () => {
         setLoading(true);
         try {
@@ -61,13 +64,14 @@ export default function Login() {
 
                 const tagRef = doc(collection(FIREBASE_DB, "users", user.uid, "tags"), "Food")
                 await setDoc(tagRef, {
-                    name:"Food",
+                    name: "Food",
+
                 })
-                const expensesRef = doc(collection(FIREBASE_DB, "users", user.uid, "expenses"), "FirstExpense")
+                const expensesRef = doc(collection(FIREBASE_DB, "users", user.uid, "expenses"))
                 await setDoc(expensesRef, {
                     expenseTitle: "Safe-Wallet",
-                    amout: "0",
-                    tag: "Default"
+                    tag: "Default",
+                    createdAt: yesterday
                 })
 
                 Alert.alert("Succès", "Informations supplémentaires!");
@@ -117,6 +121,7 @@ export default function Login() {
                                 </View>
                             </>
                         )}
+
                     </>
                 ) : (
                     <>
@@ -140,8 +145,8 @@ export default function Login() {
                         <Button style={styles.InfoButton} onPress={saveMoreInfo}>Confirmer</Button>
                     </>
                 )}
-            </KeyboardAvoidingView>
 
+            </KeyboardAvoidingView>
             <Text style={styles.returnButton} onPress={() => router.push("/")}>
                 Retour
             </Text>

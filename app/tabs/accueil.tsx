@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/src/firebase/FireBaseConfig";
 import { doc, getDoc, setDoc, getDocs, collection, updateDoc, serverTimestamp } from "firebase/firestore"
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -15,14 +15,13 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
     const [userData, setUserData] = useState<any>(null)
     const [loading, setLoading] = useState<boolean>(true)
     const [newExpenseTitle, setNewExpenseTitle] = useState("");
-    const [newExpenseAmount, setNewExpenseAmount] = useState(0);
+    const [newExpenseAmount, setNewExpenseAmount] = useState<number | undefined>(undefined);
     const [tags, setTags] = useState<any[]>([]);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState<string | null>(null);
     const [items, setItems] = useState<any[]>([]);
     const [expensesData, setExpensesData] = useState<any[]>([]);
     const [sold, setSold] = useState<number>(0);
-
 
     let total = 0;
     const today = new Date();
@@ -238,12 +237,12 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                         onChangeText={(text) => setNewExpenseTitle(text)}
                     />
                     <TextInput
-                        value={newExpenseAmount.toString()}
+                        value={newExpenseAmount !== undefined ? newExpenseAmount.toString() : ""}
                         style={styles.input}
                         placeholder="Montant"
                         placeholderTextColor="#888"
                         keyboardType="numeric"
-                        onChangeText={(text) => setNewExpenseAmount(Number(text))}
+                        onChangeText={(text) => setNewExpenseAmount(text ? Number(text) : undefined)}
                     />
                     <DropDownPicker
                         open={open}
@@ -292,6 +291,24 @@ export default function Accueil({ setShowCard, showCard }: AccueilProps) {
                     >
                         <Text style={{ color: "#fff", fontSize: 40 }}>+</Text>
                     </TouchableOpacity>
+                    <View style={{ width: "90%", marginTop: 20 }}>
+                        <ScrollView style={styles.scrollContainer}>
+                            {expensesData
+                                .slice() // copie du tableau
+                                .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds) // du plus récent au plus ancien
+                                .map((expense, index) => (
+                                    <View key={index} style={styles.cardExpenses}>
+                                        <View style={styles.expensesTitle}>
+                                            <Text style={styles.amount}>Prix: {expense.amount} CHF</Text>
+                                            <Text style={styles.tag}>{expense.tag}</Text>
+                                        </View>
+                                        <Text style={styles.title}>{expense.expenseTitle}</Text>
+                                    </View>
+                                ))}
+                        </ScrollView>
+
+
+                    </View>
 
                 </>
             )}
@@ -418,6 +435,35 @@ const styles = StyleSheet.create({
         backgroundColor: "#8888880c",
         justifyContent: "center",
     },
+    scrollContainer: {
+        backgroundColor: "#f3eeeaff",
+        height: 470
+    },
+    cardExpenses: {
+        backgroundColor: "#fff",
+        padding: 10,
+        marginBottom: 15,
+        borderRadius: 15,
+        shadowColor: "#5555",   // couleur de l'ombre
+        shadowOffset: { width: 0, height: 5 }, // décalage de l'ombre
+        shadowOpacity: 0.3,     // opacité
+    },
+    amount: {
+        color: "#555555ff"
+    },
+    title: {
+        color: "#007bffa7"
+    },
+    expensesTitle: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+
+    },
+    tag: {
+        color: "#555555ff"
+    }
+
 
 });
 
